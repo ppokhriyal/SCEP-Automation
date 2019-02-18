@@ -55,10 +55,19 @@ def final_certificate(scep_url,challengepass,cname):
     check_pass = subprocess.call(args,shell=True,stdout=subprocess.PIPE)
 
     if check_pass > 0 :
-
+        print("")
         print("Error: SCEP Enrollment failed.Please check /var/log/scep")
     else:
+        print("")
         print("SCEP Enrollment Successfull.Please check /var/log/scep")
+        print("")
+        print("Bulding SCEP Certificate : /usr/etc/ipsec.d/certs")
+        args1 = 'openssl x509 -inform der -outform pem -in /usr/etc/ipsec.d/certs/local_cert.der -out /usr/etc/ipsec.d/certs/'+cname+'-scep.pem'
+        subprocess.call(args1,shell=True,stdout=subprocess.PIPE)
+        print("")
+        print("Building Private Key : /usr/etc/ipsec.d/private/")
+        args2 = 'openssl pkey -inform der -outform pem -in /usr/etc/ipsec.d/private/local_key.der -out /usr/etc/ipsec.d/private/Private_key-scep.pem'
+        subprocess.call(args2,shell=True,stdout=subprocess.PIPE)
 
 
 
@@ -68,6 +77,7 @@ def download_ca_ra_certificates(scep_url,challengepass,cname):
     p = subprocess.call(args1,shell=True,stdout=subprocess.PIPE)
     
     if p > 0 :
+        print("")
         print("Error: SCEP Enrollment failed. Please check /tmp/scep_log")
     else:
         print("")
@@ -82,8 +92,12 @@ def download_ca_ra_certificates(scep_url,challengepass,cname):
         subprocess.call(args3,shell=True,stdout=subprocess.PIPE)
         subprocess.call(args4,shell=True,stdout=subprocess.PIPE)
 
+
+def converting_certificates():
+
         #Converting DER Certificates to PEM Certificates
         cert_dir = "/usr/etc/ipsec.d/cacerts/"
+
         for cert_file in os.listdir(cert_dir):
             args5 = 'openssl x509 -inform der -outform pem -in '+cert_dir+cert_file+ ' -out /tmp/scep-certs/'+cert_file.split('.')[0]+'.pem'
             subprocess.call(args5,shell=True,stdout=subprocess.PIPE)
@@ -127,7 +141,9 @@ def download_ca_ra_certificates(scep_url,challengepass,cname):
                 print('')
 
 
+
 if __name__ == '__main__':
+
     scep_help()
     print("")
     user_input1 = input("Enter the SCEP Enrollment URL: ")
@@ -135,5 +151,6 @@ if __name__ == '__main__':
     user_input3 = input("Enter the Common Name        : ")
 
     scep_envbuild()
-    final_certificate(user_input1,user_input2,user_input3)
     download_ca_ra_certificates(user_input1,user_input2,user_input3)
+    final_certificate(user_input1,user_input2,user_input3)
+    converting_certificates()
