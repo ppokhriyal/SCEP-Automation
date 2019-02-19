@@ -26,6 +26,9 @@ def scep_envbuild():
     #While compilation of strongsawn set the config path to /etc else
     #it will go to default /usr/etc
 
+    os.system("mkdir /tmp/scep-certs/")
+    os.system("rm -rf /tmp/scep-certs/*")
+
     os.system("rm -rf  /usr/etc/ipsec.d/cacerts/*")
     os.system("rm -rf /usr/etc/ipsec.d/certs/*")
     os.system("rm -rf /usr/etc/ipsec.d/private/*")
@@ -113,10 +116,8 @@ def converting_certificates():
             if status6 == 0 :
                 print("")
                 print("Building CA Certificate")
-                mv_args = 'mv '+scep_cert_dir+scep_cert+' '+scep_cert_dir+scep_cert.split('.')[0]+'-CA.pem'
+                mv_args = 'cp '+scep_cert_dir+scep_cert+' '+scep_cert_dir+scep_cert.split('.')[0]+'-CA.pem'
                 subprocess.call(mv_args,shell=True,stdout=subprocess.PIPE)
-            else:
-                print('')
 
             args7 = 'openssl x509 -in '+scep_cert_dir+scep_cert+ ' -text -noout | grep "Key Encipherment"'
             status7 = subprocess.call(args7,shell=True,stdout=subprocess.PIPE)
@@ -124,10 +125,8 @@ def converting_certificates():
             if status7 == 0:
                 print("")
                 print("Building Key Encipherment Certificate")
-                mv_args = 'mv '+scep_cert_dir+scep_cert+' '+scep_cert_dir+scep_cert.split('.')[0]+'-Enc.pem'
+                mv_args = 'cp '+scep_cert_dir+scep_cert+' '+scep_cert_dir+scep_cert.split('.')[0]+'-Enc.pem'
                 subprocess.call(mv_args,shell=True,stdout=subprocess.PIPE)
-            else:
-                print('')
 
             args8 = 'openssl x509 -in '+scep_cert_dir+scep_cert+ ' -text -noout | grep "Digital Signature"'
             status8 = subprocess.call(args8,shell=True,stdout=subprocess.PIPE)
@@ -135,11 +134,8 @@ def converting_certificates():
             if status8 == 0:
                 print("")
                 print("Building Digital Signature Certificate")
-                mv_args = 'mv '+scep_cert_dir+scep_cert+' '+scep_cert_dir+scep_cert.split('.')[0]+'-Disg.pem'
+                mv_args = 'cp '+scep_cert_dir+scep_cert+' '+scep_cert_dir+scep_cert.split('.')[0]+'-Disg.pem'
                 subprocess.call(mv_args,shell=True,stdout=subprocess.PIPE)
-            else:
-                print('')
-
 
 
 if __name__ == '__main__':

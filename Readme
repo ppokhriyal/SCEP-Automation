@@ -1,1 +1,17 @@
-SCEP Automation Script
+SCEP [ Simple Certificate Enrollment Protocol ]
+-----------------------------------------------
+
+SCEP was originally developed by Cisco,and is documented in an Internet Engineering Task Force (IETF) Draft.
+
+SCEP uses the CA certificate in order to secure the message exchange for the CSR.
+
+In this Python script StrongSwan IPsec method is used.
+StrongSwan is a Complete IPsec solution providing encryption and authentication to servers and clients.
+
+"pystrongswan.py" is a interactive script whih aske for the following information :
+
+
+SCEP Url
+Challenge Password
+CName [Common Name]
+
