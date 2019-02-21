@@ -26,8 +26,11 @@ def scep_envbuild():
     #While compilation of strongsawn set the config path to /etc else
     #it will go to default /usr/etc
 
-    os.system("mkdir /tmp/scep-certs/")
     os.system("rm -rf /tmp/scep-certs/*")
+    os.system("mkdir /tmp/scep-certs/")
+
+    os.system("rm -rf /tmp/Final-Scep-Cert")
+    os.system("mkdir /tmp/Final-Scep-Cert")
 
     os.system("rm -rf  /usr/etc/ipsec.d/cacerts/*")
     os.system("rm -rf /usr/etc/ipsec.d/certs/*")
